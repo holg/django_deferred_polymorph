@@ -6,7 +6,7 @@ from django_deferred_polymorph.manager import DeferredPolymorphManager
 
 
 class DeferredPolymorphBaseModel(models.Model):
-    _poly_ct = models.ForeignKey(ContentType, related_name='+', editable=False)
+    _poly_ct = models.ForeignKey(ContentType, related_name='+', editable=False, on_delete=models.CASCADE)
 
     objects = DeferredPolymorphManager()
     base_objects = models.Manager()

@@ -19,4 +19,7 @@ def fix_parent_and_child_relation(model):
         if not issubclass(parent, DeferredPolymorphBaseModel):
             continue
         setattr(model, field.name, property(lambda self: parent.base_objects.get(pk=self.pk)))
-        setattr(parent, field.related.get_accessor_name(), property(lambda self: model.base_objects.get(pk=self.pk)))
+        try:
+            setattr(parent, field.related.get_accessor_name(), property(lambda self: model.base_objects.get(pk=self.pk)))
+        except AttributeError as e:  ## TODO htr check that
+            setattr(parent, field.related_accessor_class.__name__, property(lambda self: model.base_objects.get(pk=self.pk)))
